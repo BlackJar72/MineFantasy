@@ -1,0 +1,46 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Direct copy -- Will need some changes/
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+entity.MineFantasy.Minotaur.name=Minotaur
+entity.MineFantasy.MinotaurTitan.name=Minotaur Titan
+entity.MineFantasy.Basilisk.name=Basilisk
+entity.MineFantasy.Drake.name=Drake
+entity.MineFantasy.SkeletalKnight.name=Skeletal Knight
+entity.MineFantasy.SmallDragon.name=Small Dragon
+entity.MineFantasy.HoundMF.name=Hound
+entity.MineFantasy.ImprovedZombie.name=Improved Zombie
+entity.MineFantasy.ImprovedSkeleton.name=Improved Skeleton
+
+entity.MF_Minotaur.name=Minefantasy Minotaur
+entity.MF_Dragon.name=Minefantasy Dragon
+death.attack.dragonstomp=%1$s was stomped by a Dragon
+death.attack.humanstomp=%1$s was stomped by %2$s
+death.attack.fireblast=%1$s was roasted by %2$s
+death.attack.fireblastBase=%1$s was roasted
+death.attack.blastfurn=%1$s was incinerated by a Blast Furnace
+death.attack.frostblast=%1$s was frozen by %2$s
+death.attack.frostblastBase=%1$s was frozen
+death.attack.acidblast=%1$s was Vaporised by %2$s
+death.attack.acidblastBase=%1$s was Vaporised
+
+death.attack.mob.pound=%1$s was pounded by a %2$s
+death.attack.mob.gore=%1$s was gored by a %2$s
+death.attack.mob.beserk=%1$s was torn apart by a %2$s
+
+entity.minotaur.name=Minotaur
+entity.dredminotaur.name=Dread Minotaur
+
+entity.dragonbreed.red.name=Red
+entity.dragonbreed.white.name=Frost
+entity.dragonbreed.black.name=Dire
+entity.dragonbreed.green.name=Green
+
+entity.dragon_young.name=Young %1$s Dragon
+entity.dragon.name=%1$s Dragon
+entity.dragon_mature.name=Mature %1$s Dragon
+entity.dragon_elder.name=Elder %1$s Dragon
+entity.dragon_ancient.name=Ancient %1$s Dragon
+
+event.dragonnear.name=A Dragon Prowls, take cover or stay to fight!
+event.dragonnear.forge.name=Your crafts insult dragon kind!
