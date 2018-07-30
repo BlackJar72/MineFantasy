@@ -1,6 +1,3 @@
-/**
- * 
- */
 package minefantasy.entity;
 
 import java.util.List;
@@ -61,7 +58,7 @@ import net.minecraft.world.WorldType;
  * @author AnonymousProductions
  *
  */
-public class EntityDrake extends EntityDaymob implements ISpecialSenses, IGrowable{
+public class EntityDrake extends EntityDaymob implements ISpecialSenses, IGrowable {
 
 	private int mouthAngle = 0;
 	public int tailIdleY;
