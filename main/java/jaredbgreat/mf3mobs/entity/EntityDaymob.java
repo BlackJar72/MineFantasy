@@ -214,8 +214,8 @@ public abstract class EntityDaymob extends EntityCreature implements IMob {
 
 	public boolean isProperBlock(int x, int y, int z) {
 		// Should dirt, course dirt, sand, and podzol also be valid.
-    	return world.getBlockState(new BlockPos(x, y - 1, z)) 
-    			== Blocks.GRASS.getDefaultState();
+    	return world.getBlockState(new BlockPos(x, y - 1, z)).getBlock() 
+    			== Blocks.GRASS;
 	}
 
 	public boolean isProperDistance() {
