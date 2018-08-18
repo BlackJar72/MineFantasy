@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderDrake extends RenderLiving {
 	ResourceLocation skin 
-		= new ResourceLocation(ModInfo.id, "textures/mob/drake.png");
+		= new ResourceLocation(ModInfo.ID, "textures/mob/drake.png");
     private float scale;
 
     

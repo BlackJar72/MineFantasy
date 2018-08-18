@@ -285,10 +285,13 @@ public class ModelDrake<EntityDrake> extends ModelBiped {
 				float scale, Entity entityIn) {
 		EntityDrake entity = (EntityDrake)entityIn;
 		float headX = bipedHead.rotateAngleX;
-		float mouth = (float)Math.toRadians(entity.getMouthAngle());
-		float tailY = (float)Math.toRadians(entity.getTailYAngle());
-		float tailY1 = (float)Math.toRadians(entity.getTailYAngle());
-		float tailY2 = (float)Math.toRadians(entity.getTailYAngle());
+		// FIXME: Did this really work in 1.6.4?  I think this will need 
+		// a special variable passing system, like arm swing for undead.		
+		float mouth = 0;//(float)Math.toRadians(entity.getMouthAngle());
+		float tailY = 0;//(float)Math.toRadians(entity.getTailYAngle());
+		float tailY1 = 0;//(float)Math.toRadians(entity.getTailYAngle());
+		float tailY2 = 0;//(float)Math.toRadians(entity.getTailYAngle());
+		
 		super.setRotationAngles(limbSwing, swingAmount, age, headYaw, 
 				headPitch, scale, entityIn);
 		Rthigh.rotateAngleX = Rleg.rotateAngleX 
@@ -310,8 +313,9 @@ public class ModelDrake<EntityDrake> extends ModelBiped {
 		TailEnd.rotateAngleY = tailY1;
 		TailTip.rotateAngleY = tailY2;
 
-		if(entity.scratchTime > 0) {
-			float armS = 30-(float)Math.toRadians(entity.getScratchForDisplay());
+		// FIXME: Another special variable I think
+		if(false/*entity.scratchTime > 0*/) {
+			float armS = 30-(float)Math.toRadians(0/*entity.getScratchForDisplay()*/);
 			Head.rotateAngleY = Mouth.rotateAngleY = Jaw.rotateAngleY = (float)Math.toRadians(0);
 			Head.rotateAngleX = Mouth.rotateAngleX = Jaw.rotateAngleX = (float)Math.toRadians(90);
 			RArm.rotateAngleX = RClaw.rotateAngleX = RThumb.rotateAngleX = armS;
