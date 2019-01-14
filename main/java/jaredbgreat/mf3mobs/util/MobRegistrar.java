@@ -25,8 +25,8 @@ public class MobRegistrar {
 		// Drake
 		if (true) {
 			EntityRegistry.registerModEntity(new ResourceLocation(MODID, "drake"),
-					EntityDrake.class, MODID + ".dmghoul", drakeID, instance, 80, 3,
-					true, 0x5F3E67, 0x362C1A);
+					EntityDrake.class, MODID + ".drake", drakeID, instance, 80, 3,
+					true, 0x208830, 0x88bb66);
 		}
 	}
 
