@@ -9,7 +9,7 @@ Later on, a few new mobs may be added, including steeds (upgraded horses), cave 
 and some huntable animals (spawn / despawn like monsters) for those players who prefer not to play farmers 
 and for renewable prey for the hungry traveller.
 
-Intially planned mobs: Drake, Minotaur, Basilisk, Skeletal Knight, Hound, and (maybe) Ddragons.
+Intially planned mobs: Drake, Minotaur, Basilisk, Skeletal Knight, Hound, and (maybe) dragons.
 
 Later: Possibly add the MineFantasy II upgrades to vanilla mobs, including zombie knights.
 
