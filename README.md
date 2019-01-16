@@ -13,5 +13,5 @@ Intially planned mobs: Drake, Minotaur, Basilisk, Skeletal Knight, Hound, and (m
 
 Later: Possibly add the MineFantasy II upgrades to vanilla mobs, including zombie knights.
 
-Possible future mobs: Steed (suggested by AnonymousProductions), Cave Bear, Dear, Boars, lich, special undead.
+Possible future mobs: Steed (suggested by AnonymousProductions), Cave Bear, Dear, Boars, upgraded special undead.
 
