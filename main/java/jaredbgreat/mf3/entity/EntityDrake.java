@@ -1,7 +1,7 @@
-package jaredbgreat.mf3mobs.entity;
+package jaredbgreat.mf3.entity;
 
-import jaredbgreat.mf3mobs.ai.EntityAIFindCave;
-import jaredbgreat.mf3mobs.api.tactics.ISpecialSenses;
+import jaredbgreat.mf3.ai.EntityAIFindCave;
+import jaredbgreat.mf3.api.tactics.ISpecialSenses;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
-package jaredbgreat.mf3mobs.render;
+package jaredbgreat.mf3.render;
 
-import jaredbgreat.mf3mobs.ModInfo;
-import jaredbgreat.mf3mobs.entity.EntityDrake;
-import jaredbgreat.mf3mobs.entity.IGrowableMob;
+import jaredbgreat.mf3.ModInfo;
+import jaredbgreat.mf3.entity.EntityDrake;
+import jaredbgreat.mf3.entity.IGrowableMob;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;

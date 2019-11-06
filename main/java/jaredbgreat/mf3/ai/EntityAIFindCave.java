@@ -1,6 +1,6 @@
-package jaredbgreat.mf3mobs.ai;
+package jaredbgreat.mf3.ai;
 
-import jaredbgreat.mf3mobs.entity.EntityDrake;
+import jaredbgreat.mf3.entity.EntityDrake;
 
 import java.util.Random;
 

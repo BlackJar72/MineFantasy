@@ -1,8 +1,8 @@
-package jaredbgreat.mf3mobs.proxy;
+package jaredbgreat.mf3.proxy;
 
-import jaredbgreat.mf3mobs.entity.EntityDrake;
-import jaredbgreat.mf3mobs.model.ModelDrake;
-import jaredbgreat.mf3mobs.render.RenderDrake;
+import jaredbgreat.mf3.entity.EntityDrake;
+import jaredbgreat.mf3.model.ModelDrake;
+import jaredbgreat.mf3.render.RenderDrake;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;

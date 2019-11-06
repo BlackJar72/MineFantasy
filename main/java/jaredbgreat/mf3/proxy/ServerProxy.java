@@ -1,4 +1,4 @@
-package jaredbgreat.mf3mobs.proxy;
+package jaredbgreat.mf3.proxy;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;

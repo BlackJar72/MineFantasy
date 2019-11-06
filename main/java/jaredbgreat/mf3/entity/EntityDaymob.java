@@ -1,4 +1,4 @@
-package jaredbgreat.mf3mobs.entity;
+package jaredbgreat.mf3.entity;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;

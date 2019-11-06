@@ -1,4 +1,4 @@
-package jaredbgreat.mf3mobs.api.tactics;
+package jaredbgreat.mf3.api.tactics;
 
 public interface ISpecialSenses {
 	/**

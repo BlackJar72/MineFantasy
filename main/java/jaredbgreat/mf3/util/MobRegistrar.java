@@ -1,17 +1,16 @@
-package jaredbgreat.mf3mobs.util;
+package jaredbgreat.mf3.util;
 
-import static jaredbgreat.mf3mobs.MF3Mobs.instance;
-import static jaredbgreat.mf3mobs.ModInfo.MODID;
-import static net.minecraftforge.common.BiomeDictionary.Type;
-import jaredbgreat.mf3mobs.entity.EntityDrake;
+import static jaredbgreat.mf3.ModInfo.*;
+import static jaredbgreat.mf3.MF3.*;
+import jaredbgreat.mf3.entity.EntityDrake;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 public class MobRegistrar {

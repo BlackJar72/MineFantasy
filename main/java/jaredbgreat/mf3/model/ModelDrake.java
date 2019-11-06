@@ -1,4 +1,4 @@
-package jaredbgreat.mf3mobs.model;
+package jaredbgreat.mf3.model;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;

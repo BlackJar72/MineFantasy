@@ -1,4 +1,4 @@
-package jaredbgreat.mf3mobs.entity;
+package jaredbgreat.mf3.entity;
 
 public interface IGrowableMob {
 	public float getTotalScale();
