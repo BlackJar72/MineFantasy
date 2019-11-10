@@ -1,7 +1,7 @@
 package minefantasy.mf2.entity;
 
-import java.util.List;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import minefantasy.mf2.api.weapon.IDamageType;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -13,47 +13,28 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class EntityShrapnel extends Entity implements IDamageType
-{
+import java.util.List;
+
+public class EntityShrapnel extends Entity implements IDamageType {
+    public EntityLivingBase shootingEntity;
+    public double accelerationX;
+    public double accelerationY;
+    public double accelerationZ;
     private int field_145795_e = -1;
     private int field_145793_f = -1;
     private int field_145794_g = -1;
     private Block field_145796_h;
     private boolean inGround;
-    public EntityLivingBase shootingEntity;
     private int ticksAlive;
     private int ticksInAir;
-    public double accelerationX;
-    public double accelerationY;
-    public double accelerationZ;
 
-    public EntityShrapnel(World world)
-    {
+    public EntityShrapnel(World world) {
         super(world);
         this.setSize(0.5F, 0.5F);
     }
 
-    @Override
-	protected void entityInit() {}
-
-    /**
-     * Checks if the entity is in range to render by using the past in distance and comparing it to its average edge
-     * length * 64 * renderDistanceWeight Args: distance
-     */
-    @Override
-	@SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double dist)
-    {
-        double d1 = this.boundingBox.getAverageEdgeLength() * 4.0D;
-        d1 *= 64.0D;
-        return dist < d1 * d1;
-    }
-
-    public EntityShrapnel(World world, double x, double y, double z, double xv, double yv, double zv)
-    {
+    public EntityShrapnel(World world, double x, double y, double z, double xv, double yv, double zv) {
         super(world);
         this.setSize(1.0F, 1.0F);
         this.setLocationAndAngles(x, y, z, this.rotationYaw, this.rotationPitch);
@@ -64,8 +45,7 @@ public class EntityShrapnel extends Entity implements IDamageType
         this.accelerationZ = zv / d6 * 0.1D;
     }
 
-    public EntityShrapnel(World world, EntityLivingBase shooter, double x, double y, double z)
-    {
+    public EntityShrapnel(World world, EntityLivingBase shooter, double x, double y, double z) {
         super(world);
         this.shootingEntity = shooter;
         this.setSize(1.0F, 1.0F);
@@ -82,22 +62,35 @@ public class EntityShrapnel extends Entity implements IDamageType
         this.accelerationZ = z / d3 * 0.1D;
     }
 
+    @Override
+    protected void entityInit() {
+    }
+
+    /**
+     * Checks if the entity is in range to render by using the past in distance and
+     * comparing it to its average edge length * 64 * renderDistanceWeight Args:
+     * distance
+     */
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean isInRangeToRenderDist(double dist) {
+        double d1 = this.boundingBox.getAverageEdgeLength() * 4.0D;
+        d1 *= 64.0D;
+        return dist < d1 * d1;
+    }
+
     /**
      * Called to update the entity's position/logic.
      */
     @Override
-	public void onUpdate()
-    {
-        if (!this.worldObj.isRemote && (this.shootingEntity != null && this.shootingEntity.isDead || !this.worldObj.blockExists((int)this.posX, (int)this.posY, (int)this.posZ)))
-        {
+    public void onUpdate() {
+        if (!this.worldObj.isRemote && (this.shootingEntity != null && this.shootingEntity.isDead
+                || !this.worldObj.blockExists((int) this.posX, (int) this.posY, (int) this.posZ))) {
             this.setDead();
-        }
-        else
-        {
+        } else {
             super.onUpdate();
 
-            if (this.inGround)
-            {
+            if (this.inGround) {
                 this.setDead();
                 this.inGround = false;
                 this.motionX *= this.rand.nextFloat() * 0.2F;
@@ -106,44 +99,43 @@ public class EntityShrapnel extends Entity implements IDamageType
                 this.ticksAlive = 0;
                 this.ticksInAir = 0;
                 return;
-            }
-            else
-            {
+            } else {
                 ++this.ticksInAir;
-                if(ticksInAir >= 10)setDead();
+                if (ticksInAir >= 10)
+                    setDead();
             }
 
             Vec3 vec3 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-            Vec3 vec31 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            Vec3 vec31 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY,
+                    this.posZ + this.motionZ);
             MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(vec3, vec31);
             vec3 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-            vec31 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            vec31 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY,
+                    this.posZ + this.motionZ);
 
-            if (movingobjectposition != null)
-            {
-                vec31 = Vec3.createVectorHelper(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+            if (movingobjectposition != null) {
+                vec31 = Vec3.createVectorHelper(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord,
+                        movingobjectposition.hitVec.zCoord);
             }
 
             Entity entity = null;
-            List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+            List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this,
+                    this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
             double d0 = 0.0D;
 
-            for (int i = 0; i < list.size(); ++i)
-            {
-                Entity entity1 = (Entity)list.get(i);
+            for (int i = 0; i < list.size(); ++i) {
+                Entity entity1 = (Entity) list.get(i);
 
-                if (entity1.canBeCollidedWith() && (!entity1.isEntityEqual(this.shootingEntity) || this.ticksInAir >= 25))
-                {
+                if (entity1.canBeCollidedWith()
+                        && (!entity1.isEntityEqual(this.shootingEntity) || this.ticksInAir >= 25)) {
                     float f = 0.3F;
                     AxisAlignedBB axisalignedbb = entity1.boundingBox.expand(f, f, f);
                     MovingObjectPosition movingobjectposition1 = axisalignedbb.calculateIntercept(vec3, vec31);
 
-                    if (movingobjectposition1 != null)
-                    {
+                    if (movingobjectposition1 != null) {
                         double d1 = vec3.distanceTo(movingobjectposition1.hitVec);
 
-                        if (d1 < d0 || d0 == 0.0D)
-                        {
+                        if (d1 < d0 || d0 == 0.0D) {
                             entity = entity1;
                             d0 = d1;
                         }
@@ -151,13 +143,11 @@ public class EntityShrapnel extends Entity implements IDamageType
                 }
             }
 
-            if (entity != null)
-            {
+            if (entity != null) {
                 movingobjectposition = new MovingObjectPosition(entity);
             }
 
-            if (movingobjectposition != null)
-            {
+            if (movingobjectposition != null) {
                 this.onImpact(movingobjectposition);
             }
 
@@ -165,25 +155,22 @@ public class EntityShrapnel extends Entity implements IDamageType
             this.posY += this.motionY;
             this.posZ += this.motionZ;
             float f1 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
-            this.rotationYaw = (float)(Math.atan2(this.motionZ, this.motionX) * 180.0D / Math.PI) + 90.0F;
+            this.rotationYaw = (float) (Math.atan2(this.motionZ, this.motionX) * 180.0D / Math.PI) + 90.0F;
 
-            for (this.rotationPitch = (float)(Math.atan2(f1, this.motionY) * 180.0D / Math.PI) - 90.0F; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
-            {
+            for (this.rotationPitch = (float) (Math.atan2(f1, this.motionY) * 180.0D / Math.PI)
+                    - 90.0F; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
                 ;
             }
 
-            while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
-            {
+            while (this.rotationPitch - this.prevRotationPitch >= 180.0F) {
                 this.prevRotationPitch += 360.0F;
             }
 
-            while (this.rotationYaw - this.prevRotationYaw < -180.0F)
-            {
+            while (this.rotationYaw - this.prevRotationYaw < -180.0F) {
                 this.prevRotationYaw -= 360.0F;
             }
 
-            while (this.rotationYaw - this.prevRotationYaw >= 180.0F)
-            {
+            while (this.rotationYaw - this.prevRotationYaw >= 180.0F) {
                 this.prevRotationYaw += 360.0F;
             }
 
@@ -191,12 +178,11 @@ public class EntityShrapnel extends Entity implements IDamageType
             this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
             float f2 = this.getMotionFactor();
 
-            if (this.isInWater())
-            {
-                for (int j = 0; j < 4; ++j)
-                {
+            if (this.isInWater()) {
+                for (int j = 0; j < 4; ++j) {
                     float f3 = 0.25F;
-                    this.worldObj.spawnParticle("bubble", this.posX - this.motionX * f3, this.posY - this.motionY * f3, this.posZ - this.motionZ * f3, this.motionX, this.motionY, this.motionZ);
+                    this.worldObj.spawnParticle("bubble", this.posX - this.motionX * f3, this.posY - this.motionY * f3,
+                            this.posZ - this.motionZ * f3, this.motionX, this.motionY, this.motionZ);
                 }
 
                 f2 = 0.8F;
@@ -214,21 +200,19 @@ public class EntityShrapnel extends Entity implements IDamageType
     }
 
     /**
-     * Return the motion factor for this projectile. The factor is multiplied by the original motion.
+     * Return the motion factor for this projectile. The factor is multiplied by the
+     * original motion.
      */
-    protected float getMotionFactor()
-    {
+    protected float getMotionFactor() {
         return 0.95F;
     }
 
     /**
      * Called when this EntityFireball hits a block or entity.
      */
-    protected void onImpact(MovingObjectPosition hitPos)
-    {
-        if (isBurning() && hitPos.entityHit != null)
-        {
-        	hitPos.entityHit.setFire(1);
+    protected void onImpact(MovingObjectPosition hitPos) {
+        if (isBurning() && hitPos.entityHit != null) {
+            hitPos.entityHit.setFire(1);
         }
     }
 
@@ -236,60 +220,54 @@ public class EntityShrapnel extends Entity implements IDamageType
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
     @Override
-	public void writeEntityToNBT(NBTTagCompound p_70014_1_)
-    {
-        p_70014_1_.setShort("xTile", (short)this.field_145795_e);
-        p_70014_1_.setShort("yTile", (short)this.field_145793_f);
-        p_70014_1_.setShort("zTile", (short)this.field_145794_g);
-        p_70014_1_.setByte("inTile", (byte)Block.getIdFromBlock(this.field_145796_h));
-        p_70014_1_.setByte("inGround", (byte)(this.inGround ? 1 : 0));
-        p_70014_1_.setTag("direction", this.newDoubleNBTList(new double[] {this.motionX, this.motionY, this.motionZ}));
+    public void writeEntityToNBT(NBTTagCompound p_70014_1_) {
+        p_70014_1_.setShort("xTile", (short) this.field_145795_e);
+        p_70014_1_.setShort("yTile", (short) this.field_145793_f);
+        p_70014_1_.setShort("zTile", (short) this.field_145794_g);
+        p_70014_1_.setByte("inTile", (byte) Block.getIdFromBlock(this.field_145796_h));
+        p_70014_1_.setByte("inGround", (byte) (this.inGround ? 1 : 0));
+        p_70014_1_.setTag("direction",
+                this.newDoubleNBTList(new double[]{this.motionX, this.motionY, this.motionZ}));
     }
 
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
     @Override
-	public void readEntityFromNBT(NBTTagCompound p_70037_1_)
-    {
+    public void readEntityFromNBT(NBTTagCompound p_70037_1_) {
         this.field_145795_e = p_70037_1_.getShort("xTile");
         this.field_145793_f = p_70037_1_.getShort("yTile");
         this.field_145794_g = p_70037_1_.getShort("zTile");
         this.field_145796_h = Block.getBlockById(p_70037_1_.getByte("inTile") & 255);
         this.inGround = p_70037_1_.getByte("inGround") == 1;
 
-        if (p_70037_1_.hasKey("direction", 9))
-        {
+        if (p_70037_1_.hasKey("direction", 9)) {
             NBTTagList nbttaglist = p_70037_1_.getTagList("direction", 6);
             this.motionX = nbttaglist.func_150309_d(0);
             this.motionY = nbttaglist.func_150309_d(1);
             this.motionZ = nbttaglist.func_150309_d(2);
-        }
-        else
-        {
+        } else {
             this.setDead();
         }
     }
 
     /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
+     * Returns true if other Entities should be prevented from moving through this
+     * Entity.
      */
     @Override
-	public boolean canBeCollidedWith()
-    {
+    public boolean canBeCollidedWith() {
         return true;
     }
 
     @Override
-	public float getCollisionBorderSize()
-    {
+    public float getCollisionBorderSize() {
         return 1.0F;
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
-    public float getShadowSize()
-    {
+    @SideOnly(Side.CLIENT)
+    public float getShadowSize() {
         return 0.0F;
     }
 
@@ -297,32 +275,29 @@ public class EntityShrapnel extends Entity implements IDamageType
      * Gets how bright this entity is.
      */
     @Override
-	public float getBrightness(float p_70013_1_)
-    {
+    public float getBrightness(float p_70013_1_) {
         return 1.0F;
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float p_70070_1_)
-    {
+    @SideOnly(Side.CLIENT)
+    public int getBrightnessForRender(float p_70070_1_) {
         return 15728880;
     }
 
     @SideOnly(Side.CLIENT)
-	public String getTexture()
-	{
-		return isBurning() ? "fireshrapnel" : "shrapnel";
-	}
+    public String getTexture() {
+        return isBurning() ? "fireshrapnel" : "shrapnel";
+    }
 
-	@Override
-	public float[] getDamageRatio(Object... implement) 
-	{
-		return isBurning() ? new float[]{0, 1, 0} : new float[]{0, 1, 1};//50/50 blunt and piercing, fire bombs are full blunt
-	}
+    @Override
+    public float[] getDamageRatio(Object... implement) {
+        return isBurning() ? new float[]{0, 1, 0} : new float[]{0, 1, 1};// 50/50 blunt and piercing, fire bombs
+        // are full blunt
+    }
 
-	@Override
-	public float getPenetrationLevel(Object implement) {
-		return 0;
-	}
+    @Override
+    public float getPenetrationLevel(Object implement) {
+        return 0;
+    }
 }

@@ -5,9 +5,10 @@ import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * Interface added to {@link EntityPlayer} to support offhand management
+ *
  * @author GotoLink
  */
-public interface IBattlePlayer{
+public interface IBattlePlayer {
 
     public void swingOffItem();
 

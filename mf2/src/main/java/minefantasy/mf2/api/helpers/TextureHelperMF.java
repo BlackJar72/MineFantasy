@@ -1,45 +1,38 @@
 package minefantasy.mf2.api.helpers;
 
-import java.util.Map;
-
+import com.google.common.collect.Maps;
+import cpw.mods.fml.client.FMLClientHandler;
+import minefantasy.mf2.util.MFLogUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
-import com.google.common.collect.Maps;
+import java.util.Map;
 
-import cpw.mods.fml.client.FMLClientHandler;
+public class TextureHelperMF {
+    public static final ResourceLocation ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
+    private static final Map resourceList = Maps.newHashMap();
 
-public class TextureHelperMF 
-{
-	private static final Map resourceList = Maps.newHashMap();
-	public static final ResourceLocation ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
-	
-	/**
-	 * This gets the resource location from just a simple directory(Beats the shit you have to do nower days!)
-	 */
-	public static ResourceLocation getResource(String directory)
-    {
-        ResourceLocation resourcelocation = (ResourceLocation)resourceList.get(directory);
+    /**
+     * This gets the resource location from just a simple directory(Beats the shit
+     * you have to do nower days!)
+     */
+    public static ResourceLocation getResource(String directory) {
+        ResourceLocation resourcelocation = (ResourceLocation) resourceList.get(directory);
 
-        if (resourcelocation == null)
-        {
-        	System.out.println("MineFantasy: Added Resource: " + directory);
-        	
+        if (resourcelocation == null) {
+            MFLogUtil.logDebug("MineFantasy: Added Resource: " + directory);
+
             resourcelocation = new ResourceLocation("minefantasy2", directory);
             resourceList.put(directory, resourcelocation);
         }
-        
+
         return resourcelocation;
     }
-	
-	
-	public static void renderEnchantmentEffects(Tessellator tessellator) 
-	{
+
+    public static void renderEnchantmentEffects(Tessellator tessellator) {
         GL11.glDepthFunc(GL11.GL_EQUAL);
         GL11.glDisable(GL11.GL_LIGHTING);
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(ITEM_GLINT);

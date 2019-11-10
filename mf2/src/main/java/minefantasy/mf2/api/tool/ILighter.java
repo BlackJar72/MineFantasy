@@ -2,7 +2,8 @@ package minefantasy.mf2.api.tool;
 
 public interface ILighter {
 
-	boolean canLight();
-	double getChance();
+    boolean canLight();
+
+    double getChance();
 
 }

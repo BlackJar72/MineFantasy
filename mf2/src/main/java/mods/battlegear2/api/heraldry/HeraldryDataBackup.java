@@ -1,15 +1,10 @@
 package mods.battlegear2.api.heraldry;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 
 @SuppressWarnings("unused")
 public class HeraldryDataBackup {
-
 
     public static final int RED = 1;
     public static final int GREEN = 2;
@@ -25,7 +20,8 @@ public class HeraldryDataBackup {
 
     private byte[] byteArray = null;
 
-    public HeraldryDataBackup(int pattern, int pattern_col_1, int pattern_col_2, int pattern_col_3, int crest, int crest_col_1, int crest_col_2, int crest_position, int helm, int banner) {
+    public HeraldryDataBackup(int pattern, int pattern_col_1, int pattern_col_2, int pattern_col_3, int crest,
+                              int crest_col_1, int crest_col_2, int crest_position, int helm, int banner) {
         this.pattern = (byte) pattern;
         this.crest = (short) crest;
         colours = new int[]{pattern_col_1, pattern_col_2, pattern_col_3, crest_col_1, crest_col_2};
@@ -34,21 +30,21 @@ public class HeraldryDataBackup {
         this.banner = (byte) banner;
     }
 
-    public HeraldryDataBackup(byte pattern, int pattern_col_1, int pattern_col_2, int pattern_col_3){
-        this(pattern, pattern_col_1, pattern_col_2, pattern_col_3, 0, 0, 0,0, 0, 0);
+    public HeraldryDataBackup(byte pattern, int pattern_col_1, int pattern_col_2, int pattern_col_3) {
+        this(pattern, pattern_col_1, pattern_col_2, pattern_col_3, 0, 0, 0, 0, 0, 0);
     }
 
-    public HeraldryDataBackup(byte[] data){
+    public HeraldryDataBackup(byte[] data) {
         DataInputStream input = null;
 
-        try{
+        try {
             input = new DataInputStream(new ByteArrayInputStream(data));
 
             pattern = input.readByte();
             crest = input.readShort();
             crestPosition = input.readByte();
-            colours= new int[5];
-            for(int i = 0; i < colours.length; i++){
+            colours = new int[5];
+            for (int i = 0; i < colours.length; i++) {
                 colours[i] = input.readInt();
             }
 
@@ -57,11 +53,11 @@ public class HeraldryDataBackup {
 
             byteArray = Arrays.copyOf(data, data.length);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            try{
-                if(input != null){
+        } finally {
+            try {
+                if (input != null) {
                     input.close();
                 }
             } catch (IOException e) {
@@ -74,22 +70,29 @@ public class HeraldryDataBackup {
         return new HeraldryDataBackup(10, 0xFF000000, 0xFFFFFFFF, 0xFFFFFF00, 0, 0xFF000000, 0xFF000000, 0, 0, 0);
     }
 
-    public byte[] getByteArray(){
+    public static String byteArrayToHex(byte[] a) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : a)
+            sb.append(String.format("%02x", b & 0xff));
+        return sb.toString();
+    }
 
-        if(byteArray != null){
+    public byte[] getByteArray() {
+
+        if (byteArray != null) {
             return byteArray;
         }
 
         DataOutputStream output = null;
 
-        try{
+        try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             output = new DataOutputStream(bos);
 
             output.writeByte(pattern);
             output.writeShort(crest);
             output.writeByte(crestPosition);
-            for(int i = 0; i < 5; i++){
+            for (int i = 0; i < 5; i++) {
                 output.writeInt(colours[i]);
             }
 
@@ -97,11 +100,11 @@ public class HeraldryDataBackup {
             output.writeByte(banner);
 
             return bos.toByteArray();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            try{
-                if(output != null){
+            try {
+                if (output != null) {
                     output.close();
                 }
             } catch (IOException e) {
@@ -112,8 +115,8 @@ public class HeraldryDataBackup {
         return null;
     }
 
-    public int getColourChanel(int colour, int chanelNo){
-        switch (chanelNo){
+    public int getColourChanel(int colour, int chanelNo) {
+        switch (chanelNo) {
             case RED:
                 return (colours[colour] >> 16) & 0xFF;
             case GREEN:
@@ -136,13 +139,6 @@ public class HeraldryDataBackup {
     @Override
     public String toString() {
         return byteArrayToHex(getByteArray());
-    }
-
-    public static String byteArrayToHex(byte[] a) {
-        StringBuilder sb = new StringBuilder();
-        for(byte b: a)
-            sb.append(String.format("%02x", b&0xff));
-        return sb.toString();
     }
 
     public short getCrest() {

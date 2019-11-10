@@ -1,8 +1,8 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "mf3",
+  "name": "Minefantasy III",
+  "description": "And update and mixing of Minefantasy 1 and Minefantasy 2.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",

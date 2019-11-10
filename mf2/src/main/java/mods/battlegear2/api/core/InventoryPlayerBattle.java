@@ -1,5 +1,7 @@
 package mods.battlegear2.api.core;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -7,31 +9,28 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * User: nerd-boy
- * Date: 15/07/13
- * Time: 3:08 PM
- * Replacement for the player inventory
+ * User: nerd-boy Date: 15/07/13 Time: 3:08 PM Replacement for the player
+ * inventory
  */
 public class InventoryPlayerBattle extends InventoryPlayer {
 
-    public boolean hasChanged = true;
     public static int ARMOR_OFFSET = 100;
     public static int OFFSET = 150;
     public static int WEAPON_SETS = 3;
-
     public static int EXTRA_ITEMS = WEAPON_SETS * 2;
     public static int EXTRA_INV_SIZE = EXTRA_ITEMS + 6 + 6;
-
+    public boolean hasChanged = true;
     public ItemStack[] extraItems;
-
 
     public InventoryPlayerBattle(EntityPlayer entityPlayer) {
         super(entityPlayer);
         extraItems = new ItemStack[EXTRA_INV_SIZE];
+    }
+
+    public static boolean isValidSwitch(int id) {
+        return (id >= 0 && id < getHotbarSize()) || (id >= OFFSET && id < OFFSET + EXTRA_ITEMS);
     }
 
     public boolean isBattlemode() {
@@ -40,39 +39,37 @@ public class InventoryPlayerBattle extends InventoryPlayer {
 
     /**
      * Returns a new slot index according to the type
+     *
      * @param type determines which inventory array to expand
-     * @return the new slot index, or Integer.MIN_VALUE if it is not possible to expand further
+     * @return the new slot index, or Integer.MIN_VALUE if it is not possible to
+     * expand further
      */
-    public int requestNewSlot(InventorySlotType type){
+    public int requestNewSlot(InventorySlotType type) {
         ItemStack[] temp;
-        switch(type){
+        switch (type) {
             case MAIN:
-                if(mainInventory.length+1<ARMOR_OFFSET) {
+                if (mainInventory.length + 1 < ARMOR_OFFSET) {
                     temp = new ItemStack[mainInventory.length + 1];
                     System.arraycopy(mainInventory, 0, temp, 0, mainInventory.length);
                     mainInventory = temp;
-                    return mainInventory.length;//Between 36 and 99
+                    return mainInventory.length;// Between 36 and 99
                 }
                 break;
             case ARMOR:
-                if(ARMOR_OFFSET+armorInventory.length+1<OFFSET) {
+                if (ARMOR_OFFSET + armorInventory.length + 1 < OFFSET) {
                     temp = new ItemStack[armorInventory.length + 1];
                     System.arraycopy(armorInventory, 0, temp, 0, armorInventory.length);
                     armorInventory = temp;
-                    return armorInventory.length;//Between 4 and 49
+                    return armorInventory.length;// Between 4 and 49
                 }
                 break;
             case BATTLE:
-                temp = new ItemStack[extraItems.length+1];
+                temp = new ItemStack[extraItems.length + 1];
                 System.arraycopy(extraItems, 0, temp, 0, extraItems.length);
                 extraItems = temp;
                 return extraItems.length + OFFSET;
         }
-        return Integer.MIN_VALUE;//Impossible because of byte cast in inventory NBT
-    }
-
-    public static boolean isValidSwitch(int id) {
-        return (id >= 0 && id < getHotbarSize()) || (id >= OFFSET && id < OFFSET + EXTRA_ITEMS);
+        return Integer.MIN_VALUE;// Impossible because of byte cast in inventory NBT
     }
 
     /**
@@ -90,7 +87,8 @@ public class InventoryPlayerBattle extends InventoryPlayer {
     @SideOnly(Side.CLIENT)
     private int getInventorySlotContainItemAndDamage(Item par1, int par2) {
         for (int k = 0; k < this.extraItems.length; ++k) {
-            if (this.extraItems[k] != null && this.extraItems[k].getItem() == par1 && this.extraItems[k].getItemDamage() == par2) {
+            if (this.extraItems[k] != null && this.extraItems[k].getItem() == par1
+                    && this.extraItems[k].getItemDamage() == par2) {
                 return k;
             }
         }
@@ -116,13 +114,13 @@ public class InventoryPlayerBattle extends InventoryPlayer {
 
         if (isBattlemode()) {
 
-        	if (direction > 0){
-        		direction = 1;
-            }else if (direction != 0){
-            	direction = -1;
+            if (direction > 0) {
+                direction = 1;
+            } else if (direction != 0) {
+                direction = -1;
             }
 
-            //noinspection StatementWithEmptyBody
+            // noinspection StatementWithEmptyBody
             for (currentItem -= direction; currentItem < OFFSET; currentItem += WEAPON_SETS) {
             }
 
@@ -142,9 +140,8 @@ public class InventoryPlayerBattle extends InventoryPlayer {
         int stacks = super.clearInventory(targetId, targetDamage);
 
         for (int i = 0; i < extraItems.length; i++) {
-            if (extraItems[i] != null &&
-                    (targetId == null || extraItems[i].getItem() == targetId) &&
-                    (targetDamage <= -1 || extraItems[i].getItemDamage() == targetDamage)) {
+            if (extraItems[i] != null && (targetId == null || extraItems[i].getItem() == targetId)
+                    && (targetDamage <= -1 || extraItems[i].getItemDamage() == targetDamage)) {
 
                 stacks += extraItems[i].stackSize;
                 extraItems[i] = null;
@@ -155,22 +152,23 @@ public class InventoryPlayerBattle extends InventoryPlayer {
     }
 
     /**
-     * Decrement the number of animations remaining. Only called on client side. This is used to handle the animation of
-     * receiving a block.
+     * Decrement the number of animations remaining. Only called on client side.
+     * This is used to handle the animation of receiving a block.
      */
     @Override
     public void decrementAnimations() {
-    	super.decrementAnimations();
+        super.decrementAnimations();
         for (int i = 0; i < this.extraItems.length; ++i) {
             if (this.extraItems[i] != null) {
-                this.extraItems[i].updateAnimation(this.player.worldObj, this.player, i, this.currentItem + OFFSET == i);
+                this.extraItems[i].updateAnimation(this.player.worldObj, this.player, i,
+                        this.currentItem + OFFSET == i);
             }
         }
     }
 
-
     /**
-     * removed one item of specified itemID from inventory (if it is in a stack, the stack size will reduce with 1)
+     * removed one item of specified itemID from inventory (if it is in a stack, the
+     * stack size will reduce with 1)
      */
     @Override
     public boolean consumeInventoryItem(Item par1) {
@@ -187,7 +185,6 @@ public class InventoryPlayerBattle extends InventoryPlayer {
             return true;
         }
     }
-
 
     /**
      * Get if a specifiied item id is inside the inventory.
@@ -251,7 +248,6 @@ public class InventoryPlayerBattle extends InventoryPlayer {
         }
     }
 
-
     @Override
     public void setInventorySlotContents(int slot, ItemStack itemStack) {
         setInventorySlotContents(slot, itemStack, true);
@@ -285,7 +281,7 @@ public class InventoryPlayerBattle extends InventoryPlayer {
         for (int i = 0; i < extraItems.length; ++i) {
             if (extraItems[i] != null) {
                 nbttagcompound = new NBTTagCompound();
-                //This will be -ve, but meh still works
+                // This will be -ve, but meh still works
                 nbttagcompound.setByte("Slot", (byte) (i + OFFSET));
                 this.extraItems[i].writeToNBT(nbttagcompound);
                 nbtList.appendTag(nbttagcompound);
@@ -329,14 +325,13 @@ public class InventoryPlayerBattle extends InventoryPlayer {
     }
 
     @Override
-    public int getSizeInventory()
-    {
+    public int getSizeInventory() {
         return this.mainInventory.length + this.armorInventory.length;
     }
 
     @Override
     public void dropAllItems() {
-    	super.dropAllItems();
+        super.dropAllItems();
         for (int i = 0; i < this.extraItems.length; ++i) {
             if (this.extraItems[i] != null) {
                 this.player.func_146097_a(this.extraItems[i], true, false);
@@ -362,10 +357,10 @@ public class InventoryPlayerBattle extends InventoryPlayer {
         }
     }
 
-    public ItemStack getCurrentOffhandWeapon(){
-        if(isBattlemode()){
-            return getStackInSlot(currentItem+WEAPON_SETS);
-        }else{
+    public ItemStack getCurrentOffhandWeapon() {
+        if (isBattlemode()) {
+            return getStackInSlot(currentItem + WEAPON_SETS);
+        } else {
             return null;
         }
     }

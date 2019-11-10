@@ -9,152 +9,120 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.tileentity.TileEntityFurnace;
 
-public class ContainerBlastHeater extends Container
-{
+public class ContainerBlastHeater extends Container {
     private TileEntityBlastFH tile;
     private boolean isGuiContainer = false;
     private int lastFuel;
     private int lastFuelMax;
-    
-    public ContainerBlastHeater(InventoryPlayer user, TileEntityBlastFH tile)
-    {
-    	isGuiContainer = true;
+
+    public ContainerBlastHeater(InventoryPlayer user, TileEntityBlastFH tile) {
+        isGuiContainer = true;
         this.tile = tile;
-        
-		this.addSlotToContainer(new Slot(tile, 0, 80, 76));
-		
+
+        this.addSlotToContainer(new Slot(tile, 0, 80, 76));
+
         int i;
 
-        for (i = 0; i < 3; ++i)
-        {
-            for (int j = 0; j < 9; ++j)
-            {
+        for (i = 0; i < 3; ++i) {
+            for (int j = 0; j < 9; ++j) {
                 this.addSlotToContainer(new Slot(user, j + i * 9 + 9, 8 + j * 18, 126 + i * 18));
             }
         }
 
-        for (i = 0; i < 9; ++i)
-        {
+        for (i = 0; i < 9; ++i) {
             this.addSlotToContainer(new Slot(user, i, 8 + i * 18, 184));
         }
     }
 
     @Override
-    public void detectAndSendChanges()
-    {
-    	for (int i = 0; i < this.crafters.size(); ++i)
-        {
-            ICrafting icrafting = (ICrafting)this.crafters.get(i);
+    public void detectAndSendChanges() {
+        for (int i = 0; i < this.crafters.size(); ++i) {
+            ICrafting icrafting = (ICrafting) this.crafters.get(i);
 
-            if (this.lastFuel != tile.fuel)
-            {
+            if (this.lastFuel != tile.fuel) {
                 icrafting.sendProgressBarUpdate(this, 0, tile.fuel);
             }
 
-            if (this.lastFuelMax != tile.maxFuel)
-            {
+            if (this.lastFuelMax != tile.maxFuel) {
                 icrafting.sendProgressBarUpdate(this, 1, tile.maxFuel);
             }
         }
-    	this.lastFuel = tile.fuel;
+        this.lastFuel = tile.fuel;
         this.lastFuelMax = tile.maxFuel;
-        
-    	for (int i = 0; i < this.inventorySlots.size(); ++i)
-        {
-            ItemStack itemstack = ((Slot)this.inventorySlots.get(i)).getStack();
-            ItemStack itemstack1 = (ItemStack)this.inventoryItemStacks.get(i);
 
-            if (!ItemStack.areItemStacksEqual(itemstack1, itemstack))
-            {
-            	if(isGuiContainer)
-            	{
-            		tile.onInventoryChanged();
-            	}
-            	
+        for (int i = 0; i < this.inventorySlots.size(); ++i) {
+            ItemStack itemstack = ((Slot) this.inventorySlots.get(i)).getStack();
+            ItemStack itemstack1 = (ItemStack) this.inventoryItemStacks.get(i);
+
+            if (!ItemStack.areItemStacksEqual(itemstack1, itemstack)) {
+                if (isGuiContainer) {
+                    tile.onInventoryChanged();
+                }
+
                 itemstack1 = itemstack == null ? null : itemstack.copy();
                 this.inventoryItemStacks.set(i, itemstack1);
 
-                for (int j = 0; j < this.crafters.size(); ++j)
-                {
-                    ((ICrafting)this.crafters.get(j)).sendSlotContents(this, i, itemstack1);
+                for (int j = 0; j < this.crafters.size(); ++j) {
+                    ((ICrafting) this.crafters.get(j)).sendSlotContents(this, i, itemstack1);
                 }
             }
         }
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
-    public void updateProgressBar(int id, int value)
-    {
-        if (id == 0)
-        {
+    public void updateProgressBar(int id, int value) {
+        if (id == 0) {
             tile.fuel = value;
         }
 
-        if (id == 1)
-        {
+        if (id == 1) {
             tile.maxFuel = value;
         }
     }
-    
+
     @Override
-	public boolean canInteractWith(EntityPlayer p_75145_1_)
-    {
+    public boolean canInteractWith(EntityPlayer p_75145_1_) {
         return this.tile.isUseableByPlayer(p_75145_1_);
     }
-    
-    @Override
-    public ItemStack transferStackInSlot(EntityPlayer user, int clicked)
-    {
-        ItemStack itemstack = null;
-        Slot slot = (Slot)this.inventorySlots.get(clicked);
 
-        if (slot != null && slot.getHasStack())
-        {
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer user, int clicked) {
+        ItemStack itemstack = null;
+        Slot slot = (Slot) this.inventorySlots.get(clicked);
+
+        if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if (clicked > 0)//INVENTORY
+            if (clicked > 0)// INVENTORY
             {
-                if (TileEntityBlastFH.isFuel(itemstack1))
+                if (TileEntityBlastFH.isFuel(itemstack1)) {
+                    if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
+                        return null;
+                    }
+                } else if (clicked >= 1 && clicked < 28)// INVENTORY
                 {
-                    if (!this.mergeItemStack(itemstack1, 0, 1, false))
-                    {
+                    if (!this.mergeItemStack(itemstack1, 28, 37, false)) {
                         return null;
                     }
                 }
-                else if (clicked >= 1 && clicked < 28)//INVENTORY
-                {
-                    if (!this.mergeItemStack(itemstack1, 28, 37, false))
-                    {
-                        return null;
-                    }
-                }
-                //BAR
-                else if (clicked >= 28 && clicked < 37 && !this.mergeItemStack(itemstack1, 1, 28, false))
-                {
+                // BAR
+                else if (clicked >= 28 && clicked < 37 && !this.mergeItemStack(itemstack1, 1, 28, false)) {
                     return null;
                 }
-            }
-            else if (!this.mergeItemStack(itemstack1, 1, 37, false))
-            {
+            } else if (!this.mergeItemStack(itemstack1, 1, 37, false)) {
                 return null;
             }
 
-            if (itemstack1.stackSize == 0)
-            {
-                slot.putStack((ItemStack)null);
-            }
-            else
-            {
+            if (itemstack1.stackSize == 0) {
+                slot.putStack((ItemStack) null);
+            } else {
                 slot.onSlotChanged();
             }
 
-            if (itemstack1.stackSize == itemstack.stackSize)
-            {
+            if (itemstack1.stackSize == itemstack.stackSize) {
                 return null;
             }
 

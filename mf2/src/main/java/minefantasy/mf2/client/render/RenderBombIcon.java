@@ -1,47 +1,43 @@
 package minefantasy.mf2.client.render;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import minefantasy.mf2.entity.EntityBomb;
 import minefantasy.mf2.item.list.ToolListMF;
-import minefantasy.mf2.util.MFLogUtil;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 @SideOnly(Side.CLIENT)
-public class RenderBombIcon extends Render
-{
-    public RenderBombIcon()
-    {
+public class RenderBombIcon extends Render {
+    public RenderBombIcon() {
     }
+
     /**
-     * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
-     * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
-     * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
-     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
+     * Actually renders the given argument. This is a synthetic bridge method,
+     * always casting down its argument and then handing it off to a worker function
+     * which does the actual work. In all probabilty, the class Render is generic
+     * (Render<T extends Entity) and this method has signature public void
+     * func_76986_a(T entity, double d, double d1, double d2, float f, float f1).
+     * But JAD is pre 1.5 so doesn't do that.
      */
     @Override
-    public void doRender(Entity entity, double x, double y, double z, float f, float f1)
-    {
-    	doRender((EntityBomb)entity, x, y, z, f, f1);
+    public void doRender(Entity entity, double x, double y, double z, float f, float f1) {
+        doRender((EntityBomb) entity, x, y, z, f, f1);
     }
-    public void doRender(EntityBomb bomb, double x, double y, double z, float f, float f1)
-    {
-    	byte casing = bomb.getCasing();
+
+    public void doRender(EntityBomb bomb, double x, double y, double z, float f, float f1) {
+        byte casing = bomb.getCasing();
         IIcon iicon = ToolListMF.bomb_custom.getIcon(casing);
 
-        if (iicon != null)
-        {
+        if (iicon != null) {
             GL11.glPushMatrix();
-            GL11.glTranslatef((float)x, (float)y, (float)z);
+            GL11.glTranslatef((float) x, (float) y, (float) z);
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glScalef(0.5F, 0.5F, 0.5F);
             this.bindEntityTexture(bomb);
@@ -53,17 +49,16 @@ public class RenderBombIcon extends Render
         }
     }
 
-	/**
-     * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
+    /**
+     * Returns the location of an entity's texture. Doesn't seem to be called unless
+     * you call Render.bindEntityTexture.
      */
     @Override
-	protected ResourceLocation getEntityTexture(Entity p_110775_1_)
-    {
+    protected ResourceLocation getEntityTexture(Entity p_110775_1_) {
         return TextureMap.locationItemsTexture;
     }
 
-    private void func_77026_a(Tessellator p_77026_1_, IIcon p_77026_2_)
-    {
+    private void func_77026_a(Tessellator p_77026_1_, IIcon p_77026_2_) {
         float f = p_77026_2_.getMinU();
         float f1 = p_77026_2_.getMaxU();
         float f2 = p_77026_2_.getMinV();
