@@ -1,4 +1,4 @@
-package jaredbgreat.mf3.ai;
+package jaredbgreat.mf3.entity.ai;
 
 import jaredbgreat.mf3.entity.EntityDrake;
 
